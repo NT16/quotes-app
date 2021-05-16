@@ -19,40 +19,34 @@ router.post('/', async (req,res)=>{
 
 router.post( '/login', async (req,res) => {
     try {
-        const user = await User.findByCredentials(req.body.email, req.body.password )
+        const user = await User.findByCredentials(req.body.email, req.body.password );
 
         const token = await user.generateAuthToken();
-        console.log('loggin ', user, token)
-        res.send( { user, token } )
+        res.send( { user, token } );
     } catch(e) {
-        res.status(400).send()
+        res.status(400).send();
     }
 });
 
 router.post('/logout', auth, async (req,res)=>{
     try{
-        console.log('LOGOUT')
-        req.user.tokens = req.user.tokens.filter( token => token.token !== req.token) 
+        req.user.tokens = req.user.tokens.filter( token => token.token !== req.token); 
 
-        console.log('new token set', req.user.tokens);
-        await req.user.save()
-        res.send()
-
+        await req.user.save();
+        res.send();
     } catch(e) {
-        res.status(500).send()
+        res.status(500).send();
     }
 });
 
 router.post('/logoutAll', auth, async (req, res) => {
     try {
-        console.log('LOGOUT ALL')
-        req.user.tokens = []
+        req.user.tokens = [];
 
-        console.log('new token set', req.user.tokens);
-        await req.user.save()
-        res.send()
+        await req.user.save();
+        res.send();
     } catch(e) {
-        res.status(500).send()
+        res.status(500).send();
     }
 })
 module.exports = router;

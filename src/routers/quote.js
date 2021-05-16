@@ -5,14 +5,10 @@ const auth = require('../middleware/auth');
 const router = express.Router();
 
 router.post('/', auth, async (req,res) => {
-    console.log('req.body', req.body);
-
     const quote = new Quote({
         ...req.body,
         owner: req.user._id
     });
-
-    console.log('creating new quote for user', quote);
 
     try {
         await quote.save();
